@@ -19,8 +19,6 @@
   </engines>
 
   <dependency id="cordova-custom-config" version=">=5.1.0" />
-  <dependency id="cordova-plugin-settings-hook" version=">=0.2.7" />
-  
 
   <js-module name="AppIconChanger" src="www/AppIconChanger.js">
     <clobbers target="AppIconChanger"/>
