@@ -1,6 +1,5 @@
 package org.apache.cordova.appiconchanger;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -23,35 +22,41 @@ import org.json.JSONObject;
 
 
 public class AppIconChanger extends CordovaPlugin {
-    Activity activity;
     List<String> disableNames = new ArrayList<>();
+    String packageName = AppIconChanger.class.getPackage().getName();
+
+    /**
+     * Gets the application activity from cordova's main activity.
+     *
+     * @return the application activity
+     */
+    private Context getApplicationActivity() {
+        return this.cordova.getActivity();
+    }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        // activity value must be set, for some reason cannot be set in the global variable declaration
-        activity = cordova.getActivity();
-
         if ("isSupported".equals(action)) {
             callbackContext.success();
             return true;
         } else if ("changeIcon".equals(action)) {
-            String activeName;
+            String activeActivityName;
 
             JSONObject argList = args.getJSONObject(0);
             String iconName = argList.getString("iconName");
             Boolean suppressUserNotification = argList.getBoolean("suppressUserNotification");
 
             // get the list of activities that need to be disabled
-            this.getRunningActivity(activity);
+            this.getAppIconActivities(getApplicationActivity());
 
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(activity.getPackageName());
-            stringBuilder.append("." + activity.getClass().getSimpleName() + "__");
+            stringBuilder.append(this.packageName);
+            stringBuilder.append("." + getApplicationActivity().getClass().getSimpleName() + "__");
             stringBuilder.append(iconName);
 
-            activeName = stringBuilder.toString();
+            activeActivityName = stringBuilder.toString();
 
-            this.setAppIcon(activeName, disableNames);
+            this.setAppIcon(activeActivityName, disableNames);
 
             if (!suppressUserNotification) {
                 this.iconChangeDialog(iconName);
@@ -65,7 +70,7 @@ public class AppIconChanger extends CordovaPlugin {
         }
     }
 
-    public void getRunningActivity(Context context) {
+    public void getAppIconActivities(Context context) {
         try {
             String activityName;
             String shortActivityName;
@@ -75,10 +80,14 @@ public class AppIconChanger extends CordovaPlugin {
 
             for (int i = 0; i < pi.activities.length; i++) {
                 activityName = pi.activities[i].name;
-                shortActivityName = activityName.replace(activity.getPackageName() + ".", "");
 
-                if (!shortActivityName.equals(activity.getClass().getSimpleName())) {
-                    disableNames.add(activityName);
+                // only check the activities related to the AppIconChanger package
+                if (activityName.contains(this.packageName)) {
+                    shortActivityName = activityName.replace(this.packageName + ".", "");
+
+                    if (!shortActivityName.equals(getApplicationActivity().getClass().getSimpleName())) {
+                        disableNames.add(activityName);
+                    }
                 }
             }
 
@@ -88,33 +97,32 @@ public class AppIconChanger extends CordovaPlugin {
         }
     }
 
-    public void setAppIcon(String activeName, List<String> disableNames) {
-        new AppIconNameChanger.Builder(activity)
-            .activeName(activeName) // String
-            .disableNames(disableNames) // List<String>
-            .packageName(activity.getPackageName())
-            .build()
-            .setNow();
+    public void setAppIcon(String activeActivityName, List<String> disableNames) {
+        new AppIconNameChanger.Builder(cordova.getActivity())
+                .activeActivityName(activeActivityName) // String
+                .disableNames(disableNames) // List<String>
+                .packageName(getApplicationActivity().getPackageName())
+                .build()
+                .setNow();
     }
 
     public void iconChangeDialog(String iconName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationActivity());
 
-        //Resources activityRes = cordova.getActivity().getResources();
-        Resources activityRes = activity.getResources();
+        Resources activityRes = getApplicationActivity().getResources();
 
         // get the resource IDs for all elements used from main cordova app (Ex. R.layout.appiconchanger) to get around importing the mainActivity class
-        int appiconchangerResId = activityRes.getIdentifier("appiconchanger", "layout", activity.getPackageName());
-        int appIconTextResId = activityRes.getIdentifier("appIconChangerDialog_appIconText", "id", activity.getPackageName());
-        int appIconResId = activityRes.getIdentifier("appIconChangerDialog_appIcon", "id", activity.getPackageName());
-        int appIconButtonResId = activityRes.getIdentifier("appIconChangerDialog_appIconButton", "id", activity.getPackageName());
-        int ic_launcherResId = activityRes.getIdentifier("ic_launcher", "mipmap", activity.getPackageName());
-        int app_nameResId = activityRes.getIdentifier("app_name", "string", activity.getPackageName());
-        int default_icon_idResId = activityRes.getIdentifier("default_icon_id", "string", activity.getPackageName());
+        int appiconchangerResId = activityRes.getIdentifier("appiconchanger", "layout", getApplicationActivity().getPackageName());
+        int appIconTextResId = activityRes.getIdentifier("appIconChangerDialog_appIconText", "id", getApplicationActivity().getPackageName());
+        int appIconResId = activityRes.getIdentifier("appIconChangerDialog_appIcon", "id", getApplicationActivity().getPackageName());
+        int appIconButtonResId = activityRes.getIdentifier("appIconChangerDialog_appIconButton", "id", getApplicationActivity().getPackageName());
+        int ic_launcherResId = activityRes.getIdentifier("ic_launcher", "mipmap", getApplicationActivity().getPackageName());
+        int app_nameResId = activityRes.getIdentifier("app_name", "string", getApplicationActivity().getPackageName());
+        int default_icon_idResId = activityRes.getIdentifier("default_icon_id", "string", getApplicationActivity().getPackageName());
 
         String defaultIconID = activityRes.getString(default_icon_idResId);
 
-        LayoutInflater factory = LayoutInflater.from(activity);
+        LayoutInflater factory = LayoutInflater.from(getApplicationActivity());
         View view = factory.inflate(appiconchangerResId, null);
 
         TextView appIconText = view.findViewById(appIconTextResId);
@@ -126,11 +134,11 @@ public class AppIconChanger extends CordovaPlugin {
             appIcon.setImageResource(ic_launcherResId);
         } else {
             // get the id of the icon
-            int drawableID = activity.getResources().getIdentifier(iconName, "drawable", activity.getPackageName());
+            int drawableID = getApplicationActivity().getResources().getIdentifier(iconName, "drawable", getApplicationActivity().getPackageName());
             appIcon.setImageResource(drawableID);
         }
 
-        appIconText.setText("You have changed the icon for \"" + activity.getResources().getString(app_nameResId) + "\".");
+        appIconText.setText("You have changed the icon for \"" + getApplicationActivity().getResources().getString(app_nameResId) + "\".");
 
         final AlertDialog alertDialog = builder.create();
 

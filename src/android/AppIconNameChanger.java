@@ -13,14 +13,14 @@ public class AppIconNameChanger {
 
     private Activity activity;
     List<String> disableNames;
-    String activeName;
+    String activeActivityName;
     String packageName;
 
     public AppIconNameChanger(Builder builder) {
 
         this.disableNames = builder.disableNames;
         this.activity = builder.activity;
-        this.activeName = builder.activeName;
+        this.activeActivityName = builder.activeActivityName;
         this.packageName = builder.packageName;
 
     }
@@ -29,7 +29,7 @@ public class AppIconNameChanger {
 
         private Activity activity;
         List<String> disableNames;
-        String activeName;
+        String activeActivityName;
         String packageName;
 
         public Builder(Activity activity) {
@@ -41,8 +41,8 @@ public class AppIconNameChanger {
             return this;
         }
 
-        public Builder activeName(String activeName) {
-            this.activeName = activeName;
+        public Builder activeActivityName(String activeActivityName) {
+            this.activeActivityName = activeActivityName;
             return this;
         }
 
@@ -74,9 +74,9 @@ public class AppIconNameChanger {
 
         // enable new icon
         try {
-            if (activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, activeName)) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+            if (activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, activeActivityName)) != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
                 activity.getPackageManager().setComponentEnabledSetting(
-                        new ComponentName(packageName, activeName),
+                        new ComponentName(packageName, activeActivityName),
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             }
 
@@ -90,11 +90,11 @@ public class AppIconNameChanger {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(packageName);
             stringBuilder.append("." + activity.getClass().getSimpleName() + "__" + defaultIconID);
-            activeName = stringBuilder.toString();
+            activeActivityName = stringBuilder.toString();
 
             try {
                 activity.getPackageManager().setComponentEnabledSetting(
-                        new ComponentName(packageName, activeName),
+                        new ComponentName(packageName, activeActivityName),
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
             } catch (Exception e2) {
                 e2.getStackTrace();

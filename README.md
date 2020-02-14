@@ -134,13 +134,13 @@ In order to change icons, we need to change the default activity so it doesn't d
 
 Here's where the different icons are referenced.  We need to create an Activity-Alias for each icon (Look inside the `<config-file target="AndroidManifest.xml" parent="application">` section.  Looking at the first activity-alias below, you will need to note the following things:
 1. All activity-alias entries need to be set to enabled="false" except for the default entry.
-2. The name needs to be set using the following syntax: .<Main Activity Name>__<icon_name> (there is a period at the beginning of the name, followed by the Main Activity Name you have set, there's then two underscores followed by the icon filename with no extension)
+2. The name needs to be set using the following syntax: org.apache.cordova.appiconchanger.<Main Activity Name>__<icon_name> (the first part is the package name for the icon changer, it's used to key off which activities need to be enabled/disabled, followed by the Main Activity Name you have set, there's then two underscores followed by the icon filename with no extension)
 3. The target activity needs to be set to the same name as the Main Activity (including the period prefix).
 4. The icon needs to be set to the proper filename and storage location that you have set in the resource-file inclusion above.  The default location is the drawable folder.
 	
 The second activity-alias below is the default entry.  This will be the icon that loads when the app is first installed and it's also used as a fallback icon in case something happens when we try to change to a different icon.  A few things to note about the default activity-alias:
 1. This is the only activity-alias that should be marked as enabled.
-2. The name needs to be set using the following syntax: .<Main Activity Name>__<default_icon_id> (there is a period at the beginning of the name, followed by the Main Activity Name you have set, there's then two underscores followed by the default icon id that you set above)
+2. The name needs to be set using the following syntax: org.apache.cordova.appiconchanger.<Main Activity Name>__<default_icon_id> (the first part is the package name for the icon changer, it's used to key off which activities need to be enabled/disabled, followed by the Main Activity Name you have set, there's then two underscores followed by the default icon id that you set above)
 3. The target activity needs to be set to the same name as the Main Activity (including the period prefix).
 4. The default icon needs to be set to "@mipmap/ic_launcher" in order to use the default icon at the proper dimensions.
 
@@ -148,7 +148,7 @@ The second activity-alias below is the default entry.  This will be the icon tha
 <config-file target="AndroidManifest.xml" parent="application">
 	<activity-alias 
 		android:enabled="false" 
-		android:name=".MainActivity__fc_icon_4071" 
+		android:name="org.apache.cordova.appiconchanger.MainActivity__fc_icon_4071" 
 		android:icon="@drawable/fc_icon_4071" 
 		android:label="@string/app_name" 
 		android:targetActivity=".MainActivity" 
@@ -163,7 +163,7 @@ The second activity-alias below is the default entry.  This will be the icon tha
 	<!-- the default activity -->
 	<activity-alias 
 		android:enabled="true" 
-		android:name=".MainActivity__fc_icon_default" 
+		android:name="org.apache.cordova.appiconchanger.MainActivity__fc_icon_default" 
 		android:icon="@mipmap/ic_launcher" 
 		android:label="@string/app_name" 
 		android:targetActivity=".MainActivity" 
@@ -201,7 +201,7 @@ Here is a full example of all the changes you need to add to your config.xml fil
         <!-- add activity alias for new icon -->
         <activity-alias 
             android:enabled="false" 
-            android:name=".MainActivity__icon_phonegap_60" 
+            android:name="org.apache.cordova.appiconchanger.MainActivity__icon_phonegap_60" 
             android:icon="@drawable/icon_phonegap_60" 
             android:label="@string/app_name" 
             android:targetActivity=".MainActivity" 
@@ -216,7 +216,7 @@ Here is a full example of all the changes you need to add to your config.xml fil
         <!-- the default activity alias -->
         <activity-alias 
             android:enabled="true" 
-            android:name=".MainActivity__icon_phonegap_default" 
+            android:name="org.apache.cordova.appiconchanger.MainActivity__icon_phonegap_default" 
             android:icon="@mipmap/ic_launcher" 
             android:label="@string/app_name" 
             android:targetActivity=".MainActivity" 
