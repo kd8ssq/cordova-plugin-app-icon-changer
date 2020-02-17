@@ -1,23 +1,25 @@
 {
   "name": "cordova-plugin-app-icon-changer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Change the homescreen icon of your app from code.",
   "cordova": {
     "id": "cordova-plugin-app-icon-changer",
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EddyVerbruggen/cordova-plugin-app-icon-changer.git"
+    "url": "git+https://github.com/kd8ssq/cordova-plugin-app-icon-changer.git"
   },
   "keywords": [
     "Icon Changer",
     "Home icon",
     "icon",
     "ecosystem:cordova",
-    "cordova-ios"
+    "cordova-ios",
+    "cordova-android"
   ],
   "engines": [
     {
@@ -28,7 +30,7 @@
   "author": "Eddy Verbruggen <eddyverbruggen@gmail.com> (https://github.com/EddyVerbruggen)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/EddyVerbruggen/cordova-plugin-app-icon-changer/issues"
+    "url": "https://github.com/kd8ssq/cordova-plugin-app-icon-changer/issues"
   },
-  "homepage": "https://github.com/EddyVerbruggen/cordova-plugin-app-icon-changer#readme"
+  "homepage": "https://github.com/kd8ssq/cordova-plugin-app-icon-changer#readme"
 }
