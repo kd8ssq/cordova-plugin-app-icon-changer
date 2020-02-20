@@ -237,4 +237,9 @@ Here is a full example of all the changes you need to add to your config.xml fil
 </platform>
 ```
 
-> I've found the best way to remove icons from the app is to remove the entries from the config.xml file, then remove and re-add the android platform.  Cordova will throw an error message if it tries to build an app where the icons are referenced in the AndroidManifest.xml file but the icons don't actually exist.
+> Android Notes - in no particular order
+> - I've found the best way to remove icons from the app is to remove the entries from the config.xml file, then remove and re-add the android platform.  Cordova will throw an error message if it tries to build an app where the icons are referenced in the AndroidManifest.xml file but the icons don't actually exist.
+> - The icon name, android:icon and android:name need to all match in reference to the icon name without the extension.  That's how the code knows which icon to load
+> - When testing in Android Studio, once you launch the app on a device/emulator and change the icon, when you try to re-launch the build, Android Studio will tell you that it couldn't find the activity.  It still loaded the build, but it seems to be looking for the main activity and not whatever is set to be enabled.  This doesn't happen when testing a regular app on a device.
+> - When you call the iconChange function, it can take between 5-7 seconds for the app to change.  That's not configurable.  It's just how long Android takes to process the change.
+> - When you process an icon change, any shortcut for the app your working on that's on your homescreen will be deleted because the activity changes.
