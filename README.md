@@ -108,6 +108,8 @@ For iOS app changes, we need to manipulat the .plist file.  You will need to add
 
 Android icon changes take a little more initial work to setup.  Below you will see the individual pieces that make up  how to change the icon and at the end you will see a full example of the necessary code.
 
+First, the xmlns:android="http://schemas.android.com/apk/res/android" attribute should be added to the root <widget> tag inside the config.xml.
+
 For Android icon changes, we need to manipulate the AndroidManifest.xml file.  You will need to add your icon references to your config.xml file.  Place your additional icons in a folder relative to the root of the app.  As you can see in the example below, I placed them in a directory called 'appIconChanger' inside my res folder.  You will need to create a resource-file entry for each icon you would like to change to.  
 
 ```xml
