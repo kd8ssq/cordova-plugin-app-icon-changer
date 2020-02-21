@@ -22,9 +22,9 @@
     Android IconChanger written by <a href="https://github.com/kd8ssq" target="_blank">Adam De Lay</a>
 </p>
 
-<p>
-	Let me start off by saying that I am by no means an iOS or an Android developer.  I needed to have the ability to change icons on Android devices and I couldn't find any other working options so I dug in and figure out how to make things work.  Hopefully this might be of benefit to someone.  If someone knows of a better way to do things, by all means let me know!  If you come across any problems, I can't guarantee I'll have an answer, but I'll try to help you out.  
-</p>
+
+>Let me start off by saying that I am by no means an iOS or an Android developer.  I needed to have the ability to change icons on Android devices and I couldn't find any other working options so I dug in and figure out how to make things work.  Hopefully this might be of benefit to someone.  If someone knows of a better way to do things, by all means let me know!  If you come across any problems, I can't guarantee I'll have an answer, but I'll try to help you out.  
+
 
 
 ## Installation
