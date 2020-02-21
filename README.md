@@ -23,6 +23,10 @@
 </p>
 
 
+>Let me start off by saying that I am by no means an iOS or an Android developer.  I needed to have the ability to change icons on Android devices and I couldn't find any other working options so I dug in and figure out how to make things work.  Hopefully this might be of benefit to someone.  If someone knows of a better way to do things, by all means let me know!  If you come across any problems, I can't guarantee I'll have an answer, but I'll try to help you out.  
+
+
+
 ## Installation
 
 ```
@@ -136,13 +140,13 @@ In order to change icons, we need to change the default activity so it doesn't d
 
 Here's where the different icons are referenced.  We need to create an Activity-Alias for each icon (Look inside the `<config-file target="AndroidManifest.xml" parent="application">` section.  Looking at the first activity-alias below, you will need to note the following things:
 1. All activity-alias entries need to be set to enabled="false" except for the default entry.
-2. The name needs to be set using the following syntax: org.apache.cordova.appiconchanger.<Main Activity Name>__<icon_name> (the first part is the package name for the icon changer, it's used to key off which activities need to be enabled/disabled, followed by the Main Activity Name you have set, there's then two underscores followed by the icon filename with no extension)
+2. The name needs to be set using the following syntax: org.apache.cordova.appiconchanger.`<Main Activity Name>`__`<icon_name>` (the first part is the package name for the icon changer, it's used to key off which activities need to be enabled/disabled, followed by the Main Activity Name you have set, there's then two underscores followed by the icon filename with no extension)
 3. The target activity needs to be set to the same name as the Main Activity (including the period prefix).
 4. The icon needs to be set to the proper filename and storage location that you have set in the resource-file inclusion above.  The default location is the drawable folder.
 	
 The second activity-alias below is the default entry.  This will be the icon that loads when the app is first installed and it's also used as a fallback icon in case something happens when we try to change to a different icon.  A few things to note about the default activity-alias:
 1. This is the only activity-alias that should be marked as enabled.
-2. The name needs to be set using the following syntax: org.apache.cordova.appiconchanger.<Main Activity Name>__<default_icon_id> (the first part is the package name for the icon changer, it's used to key off which activities need to be enabled/disabled, followed by the Main Activity Name you have set, there's then two underscores followed by the default icon id that you set above)
+2. The name needs to be set using the following syntax: org.apache.cordova.appiconchanger.`<Main Activity Name>`__`<default_icon_id>` (the first part is the package name for the icon changer, it's used to key off which activities need to be enabled/disabled, followed by the Main Activity Name you have set, there's then two underscores followed by the default icon id that you set above)
 3. The target activity needs to be set to the same name as the Main Activity (including the period prefix).
 4. The default icon needs to be set to "@mipmap/ic_launcher" in order to use the default icon at the proper dimensions.
 
@@ -233,4 +237,9 @@ Here is a full example of all the changes you need to add to your config.xml fil
 </platform>
 ```
 
-> I've found the best way to remove icons from the app is to remove the entries from the config.xml file, then remove and re-add the android platform.  Cordova will throw an error message if it tries to build an app where the icons are referenced in the AndroidManifest.xml file but the icons don't actually exist.
+> Android Notes - in no particular order
+> - I've found the best way to remove icons from the app is to remove the entries from the config.xml file, then remove and re-add the android platform.  Cordova will throw an error message if it tries to build an app where the icons are referenced in the AndroidManifest.xml file but the icons don't actually exist.
+> - The icon name, android:icon and android:name need to all match in reference to the icon name without the extension.  That's how the code knows which icon to load
+> - When testing in Android Studio, once you launch the app on a device/emulator and change the icon, when you try to re-launch the build, Android Studio will tell you that it couldn't find the activity.  It still loaded the build, but it seems to be looking for the main activity and not whatever is set to be enabled.  This doesn't happen when testing a regular app on a device.
+> - When you call the iconChange function, it can take between 5-7 seconds for the app to change.  That's not configurable.  It's just how long Android takes to process the change.
+> - When you process an icon change, any shortcut for the app your working on that's on your homescreen will be deleted because the activity changes.
