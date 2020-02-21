@@ -12,13 +12,13 @@ import java.util.List;
 public class AppIconNameChanger {
 
     private Activity activity;
-    List<String> disableNames;
+    List<String> activitiesToBeDisabled;
     String activeActivityName;
     String packageName;
 
     public AppIconNameChanger(Builder builder) {
 
-        this.disableNames = builder.disableNames;
+        this.activitiesToBeDisabled = builder.activitiesToBeDisabled;
         this.activity = builder.activity;
         this.activeActivityName = builder.activeActivityName;
         this.packageName = builder.packageName;
@@ -28,7 +28,7 @@ public class AppIconNameChanger {
     public static class Builder {
 
         private Activity activity;
-        List<String> disableNames;
+        List<String> activitiesToBeDisabled;
         String activeActivityName;
         String packageName;
 
@@ -36,8 +36,8 @@ public class AppIconNameChanger {
             this.activity = activity;
         }
 
-        public Builder disableNames(List<String> disableNamesl) {
-            this.disableNames = disableNamesl;
+        public Builder activitiesToBeDisabled(List<String> activitiesToBeDisabledl) {
+            this.activitiesToBeDisabled = activitiesToBeDisabledl;
             return this;
         }
 
@@ -59,13 +59,13 @@ public class AppIconNameChanger {
 
     public void setNow() {
         // disable old icon
-        for (int i = 0; i < disableNames.size(); i++) {
+        for (int i = 0; i < activitiesToBeDisabled.size(); i++) {
             try {
                 // run getComponentEnabledSetting to make sure activity-alias exists
-                activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, disableNames.get(i)));
+                activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, activitiesToBeDisabled.get(i)));
 
                 activity.getPackageManager().setComponentEnabledSetting(
-                        new ComponentName(packageName, disableNames.get(i)),
+                        new ComponentName(packageName, activitiesToBeDisabled.get(i)),
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
             } catch (Exception e) {
                 e.printStackTrace();

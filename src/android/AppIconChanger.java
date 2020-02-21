@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 
 public class AppIconChanger extends CordovaPlugin {
-    List<String> disableNames = new ArrayList<>();
+    List<String> activitiesToBeDisabled = new ArrayList<>();
     String packageName = AppIconChanger.class.getPackage().getName();
 
     /**
@@ -56,7 +56,7 @@ public class AppIconChanger extends CordovaPlugin {
 
             activeActivityName = stringBuilder.toString();
 
-            this.setAppIcon(activeActivityName, disableNames);
+            this.setAppIcon(activeActivityName, activitiesToBeDisabled);
 
             if (!suppressUserNotification) {
                 this.iconChangeDialog(iconName);
@@ -86,7 +86,7 @@ public class AppIconChanger extends CordovaPlugin {
                     shortActivityName = activityName.replace(this.packageName + ".", "");
 
                     if (!shortActivityName.equals(getApplicationActivity().getClass().getSimpleName())) {
-                        disableNames.add(activityName);
+                        activitiesToBeDisabled.add(activityName);
                     }
                 }
             }
@@ -97,10 +97,10 @@ public class AppIconChanger extends CordovaPlugin {
         }
     }
 
-    public void setAppIcon(String activeActivityName, List<String> disableNames) {
+    public void setAppIcon(String activeActivityName, List<String> activitiesToBeDisabled) {
         new AppIconNameChanger.Builder(cordova.getActivity())
                 .activeActivityName(activeActivityName) // String
-                .disableNames(disableNames) // List<String>
+                .activitiesToBeDisabled(activitiesToBeDisabled) // List<String>
                 .packageName(getApplicationActivity().getPackageName())
                 .build()
                 .setNow();
