@@ -20,11 +20,6 @@
   NSString *iconName = options[@"iconName"];
   BOOL suppressUserNotification = (options[@"suppressUserNotification"] == nil || [options[@"suppressUserNotification"] boolValue]);
 
-  if (iconName == nil) {
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"The 'iconName' parameter is mandatory"] callbackId:command.callbackId];
-    return;
-  }
-
   [[UIApplication sharedApplication] setAlternateIconName:iconName completionHandler:^(NSError *error) {
       if (error != nil) {
         NSString *errMsg = error.localizedDescription;

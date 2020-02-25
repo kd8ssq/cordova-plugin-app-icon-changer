@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-app-icon-changer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Change the homescreen icon of your app from code.",
   "cordova": {
     "id": "cordova-plugin-app-icon-changer",

@@ -106,7 +106,9 @@ For iOS app changes, we need to manipulat the .plist file.  You will need to add
 
 > Need iPad support as well? Just duplicate the config-file change above and change the parent from `CFBundleIcons` to `CFBundleIcons~ipad`.
 
-> To remove icons from your app, you will need to remove the icon references in your config.xml file and delete them from the Resources directory in Xcode (Xcode will remove all references to the icon from the plist).
+> To remove icons from your app, you will need to remove the icon references in your config.xml file and delete them from the Resources directory in Xcode (Xcode will remove all references to the icon from the plist).  I found it much easier to just update your config.xml and then remove and re-add the platform.
+
+> Change your icon back to the default: call the changeIcon function with `iconName:,` (not an empty string).  It must return as `nil` or `undefined` and then it will revert back to the default icon.  Unfortulately this is different than how Android handles the default icon so you will need to be able to detect which platform your app is running on.  If you don't currently have a way to do this, let me recommend looking into the <a href="https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-device/" target="_blank">Cordova Device plugin</a>.
 
 ### `Android`
 
@@ -236,6 +238,8 @@ Here is a full example of all the changes you need to add to your config.xml fil
     </config-file>           
 </platform>
 ```
+
+> Change your icon back to the default: call the changeIcon function with the `default_icon_id` value you set above (in this case it's `icon_phonegap_default`).  Unfortulately this is different than how iOS handles the default icon so you will need to be able to detect which platform your app is running on.  If you don't currently have a way to do this, let me recommend looking into the <a href="https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-device/" target="_blank">Cordova Device plugin</a>.
 
 > Android Notes - in no particular order
 > - I've found the best way to remove icons from the app is to remove the entries from the config.xml file, then remove and re-add the android platform.  Cordova will throw an error message if it tries to build an app where the icons are referenced in the AndroidManifest.xml file but the icons don't actually exist.
