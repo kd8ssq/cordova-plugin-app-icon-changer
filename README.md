@@ -134,7 +134,7 @@ In order to change icons, we need to change the default activity so it doesn't d
 
 ```xml
 <edit-config file="AndroidManifest.xml" target="/manifest/application/activity[@android:name='MainActivity']" mode="overwrite">
-    <activity android:name="MainActivity" />
+    <activity android:name="MainActivity" android:configChanges="orientation|screenSize" android:noHistory="true"/>
 </edit-config>   
 
 <custom-preference delete="true" name="android-manifest/application/activity[@android:name='MainActivity']/intent-filter/category[@android:name='android.intent.category.LAUNCHER']" />
@@ -159,9 +159,7 @@ The second activity-alias below is the default entry.  This will be the icon tha
 		android:name="org.apache.cordova.appiconchanger.MainActivity__fc_icon_4071" 
 		android:icon="@drawable/fc_icon_4071" 
 		android:label="@string/app_name" 
-		android:targetActivity=".MainActivity" 
-		android:configChanges="orientation|screenSize" 
-		android:noHistory="true">
+		android:targetActivity=".MainActivity">
 		<intent-filter>
 			<action android:name="android.intent.action.MAIN" />
 			<category android:name="android.intent.category.LAUNCHER" />
@@ -174,9 +172,7 @@ The second activity-alias below is the default entry.  This will be the icon tha
 		android:name="org.apache.cordova.appiconchanger.MainActivity__fc_icon_default" 
 		android:icon="@mipmap/ic_launcher" 
 		android:label="@string/app_name" 
-		android:targetActivity=".MainActivity" 
-		android:configChanges="orientation|screenSize" 
-		android:noHistory="true">
+		android:targetActivity=".MainActivity">
 		<intent-filter>
 			<action android:name="android.intent.action.MAIN"/>
 			<category android:name="android.intent.category.LAUNCHER"/>
