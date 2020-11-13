@@ -46,9 +46,10 @@
 - (void) suppressUserNotification
 {
   UIViewController* suppressAlertVC = [UIViewController new];
+  [suppressAlertVC setModalPresentationStyle: UIModalPresentationFullScreen];
   [self.viewController presentViewController:suppressAlertVC animated:NO completion:^{
-      [suppressAlertVC dismissViewControllerAnimated:NO completion: nil];
-  }];
+          [suppressAlertVC dismissViewControllerAnimated:NO completion: nil];
+      }];
 }
 
 @end
